@@ -1,7 +1,0 @@
-- [Início](categorias.md)
-- [Dashboard](dashboard.md)
-- [Reconhecimento](reconhecimento.md)
-- [Manejo](manejo.md)
-- [Comunicados](comunicados.md)
-- [Presenca](presenca.md)
-- [Integracoes](integracoes.md)
