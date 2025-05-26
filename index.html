@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ FaceSchool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/themes/vue.css">
+  <style>
+    :root { --theme-color: #2D6CDF; }
+    body {
+      background-color: #F5F5F5;
+      font-family: 'Inter', sans-serif;
+      color: #333333;
+      margin: 0;
+      padding: 0;
+    }
+    .app-name { color: #2D6CDF !important; font-weight: bold; font-size: 1.5em; }
+    .sidebar { background: #FFFFFF; border-right: 1px solid #E0E0E0; }
+    .content { max-width: 800px; margin: auto; padding: 2em; background: #FFFFFF; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    details { background: #FFFFFF; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1em; padding: 1em; transition: all 0.3s ease; }
+    details[open] { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    summary { font-weight: 600; cursor: pointer; display: flex; align-items: center; }
+    summary::after { content: "➤"; margin-left: auto; transform: rotate(0deg); transition: transform 0.3s ease; }
+    details[open] summary::after { transform: rotate(90deg); }
+  </style>
+</head>
+<body>
+  <div id="app">Carregando FAQ...</div>
+  <script>
+    window.$docsify = {
+      name: 'FAQ FaceSchool',
+      loadSidebar: true,
+      subMaxLevel: 2,
+      loadNavbar: true,
+      search: 'auto'
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+</body>
+</html>
