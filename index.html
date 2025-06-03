@@ -89,10 +89,16 @@ const faqData = [
 const faqContainer = document.getElementById("faq-container");
 const searchInput = document.getElementById("searchInput");
 
+function escapeRegex(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function highlight(text, search) {
-  const regex = new RegExp(`(${search})`, "gi");
+  const escapedSearch = escapeRegex(search);
+  const regex = new RegExp(`(${escapedSearch})`, "gi");
   return text.replace(regex, "<mark>$1</mark>");
 }
+
 
 function renderFAQs() {
   faqContainer.innerHTML = "";
