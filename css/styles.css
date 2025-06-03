@@ -1,0 +1,18 @@
+
+body {
+    background-color: #F2F2F2;
+    color: #333333;
+}
+h1 {
+    color: #2F80ED;
+}
+.accordion-button {
+    background-color: #2F80ED;
+    color: white;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #56CCF2;
+}
+.accordion-body {
+    background-color: white;
+}
