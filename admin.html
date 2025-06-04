@@ -1,121 +1,80 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin FAQ - FaceSchool</title>
+  <title>Admin - FAQ FaceSchool</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
   <style>
-    body { background-color: #f8f9fa; }
-    .hidden { display: none; }
-    .editor { max-width: 700px; margin: auto; }
+    body { background-color: #f4f6f8; color: #333; }
+    .admin-container { max-width: 960px; margin: auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.05); }
+    .form-control, .btn { margin-top: 1rem; }
+    .category-title { font-weight: bold; margin-top: 2rem; }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <div id="loginSection" class="text-center">
-      <h2 class="mb-4">Acesso Restrito</h2>
-      <input type="password" id="adminPassword" class="form-control mb-3" placeholder="Digite a senha de admin" style="max-width: 300px; margin: auto;">
-      <button onclick="checkPassword()" class="btn btn-primary">Entrar</button>
+  <div class="container admin-container">
+    <h1 class="text-center text-success">Painel Administrativo - FAQ FaceSchool</h1>
+    <div id="auth-section">
+      <input type="password" id="admin-pass" class="form-control" placeholder="Digite a senha de administrador"/>
+      <button class="btn btn-success w-100" onclick="verifyPassword()">Entrar</button>
     </div>
-
-    <div id="adminSection" class="hidden editor">
-      <h1 class="mb-4 text-center">Editor de FAQ - FaceSchool</h1>
-
-      <div class="mb-3">
-        <label class="form-label">Categoria</label>
-        <select id="categoryInput" class="form-select">
-          <option value="">-- Escolha uma categoria --</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Pergunta</label>
-        <input type="text" id="questionInput" class="form-control" placeholder="Digite a pergunta"/>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Resposta</label>
-        <textarea id="answerInput" class="form-control" rows="3" placeholder="Digite a resposta"></textarea>
-      </div>
-
-      <div class="d-grid mb-3">
-        <button class="btn btn-success" onclick="addEntry()">Adicionar ao FAQ</button>
-      </div>
-
-      <div class="d-grid mb-3">
-        <button class="btn btn-primary" onclick="downloadJSON()">Baixar JSON Atualizado</button>
-      </div>
-
-      <hr/>
-      <h2 class="h5 mt-5">Prévia do FAQ</h2>
-      <pre id="preview" class="bg-white p-3 border rounded" style="max-height: 400px; overflow-y: auto;"></pre>
+    <div id="admin-section" style="display:none;">
+      <h3 class="mt-4">Nova Pergunta</h3>
+      <input type="text" class="form-control" id="categoria" placeholder="Categoria"/>
+      <input type="text" class="form-control" id="pergunta" placeholder="Pergunta"/>
+      <textarea class="form-control" id="resposta" placeholder="Resposta"></textarea>
+      <input type="text" class="form-control" id="imagem" placeholder="URL da imagem (opcional)"/>
+      <input type="text" class="form-control" id="video" placeholder="URL do vídeo (opcional)"/>
+      <button class="btn btn-primary w-100" onclick="enviarDados()">Salvar Pergunta</button>
+      <div id="mensagem" class="text-center mt-3"></div>
     </div>
   </div>
 
-  <script>
-    const predefinedCategories = [
-      "Presença com Reconhecimento Facial",
-      "Dashboard e Relatórios",
-      "Comunicados",
-      "Integrações e Tecnologia"
-    ];
+<script>
+const senhaCorreta = "faceschool2025"; // Alterar conforme desejado
+const webAppURL = "URL_DA_WEBAPP_GOOGLE_SCRIPT";
 
-    let faqData = [];
+function verifyPassword() {
+  const senha = document.getElementById("admin-pass").value;
+  if (senha === senhaCorreta) {
+    document.getElementById("auth-section").style.display = "none";
+    document.getElementById("admin-section").style.display = "block";
+  } else {
+    alert("Senha incorreta!");
+  }
+}
 
-    function populateCategories() {
-      const select = document.getElementById("categoryInput");
-      predefinedCategories.forEach(cat => {
-        const option = document.createElement("option");
-        option.value = cat;
-        option.textContent = cat;
-        select.appendChild(option);
-      });
-    }
+function enviarDados() {
+  const categoria = document.getElementById("categoria").value;
+  const pergunta = document.getElementById("pergunta").value;
+  const resposta = document.getElementById("resposta").value;
+  const imagem = document.getElementById("imagem").value;
+  const video = document.getElementById("video").value;
 
-    function checkPassword() {
-      const pass = document.getElementById("adminPassword").value;
-      if (pass === "faceschool2025") {
-        document.getElementById("loginSection").classList.add("hidden");
-        document.getElementById("adminSection").classList.remove("hidden");
-        populateCategories();
-      } else {
-        alert("Senha incorreta.");
-      }
-    }
+  if (!categoria || !pergunta || !resposta) {
+    alert("Preencha pelo menos categoria, pergunta e resposta.");
+    return;
+  }
 
-    function addEntry() {
-      const cat = document.getElementById("categoryInput").value.trim();
-      const q = document.getElementById("questionInput").value.trim();
-      const a = document.getElementById("answerInput").value.trim();
+  fetch(webAppURL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ categoria, pergunta, resposta, imagem, video })
+  });
 
-      if (!cat || !q || !a) return alert("Todos os campos são obrigatórios!");
-
-      let category = faqData.find(c => c.category === cat);
-      if (!category) {
-        category = { category: cat, questions: [] };
-        faqData.push(category);
-      }
-
-      category.questions.push({ q, a });
-
-      document.getElementById("questionInput").value = "";
-      document.getElementById("answerInput").value = "";
-
-      updatePreview();
-    }
-
-    function updatePreview() {
-      document.getElementById("preview").textContent = JSON.stringify({ faq: faqData }, null, 2);
-    }
-
-    function downloadJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ faq: faqData }, null, 2));
-      const dlAnchor = document.createElement("a");
-      dlAnchor.setAttribute("href", dataStr);
-      dlAnchor.setAttribute("download", "perguntas.json");
-      dlAnchor.click();
-    }
-  </script>
+  document.getElementById("mensagem").innerHTML = "<span class='text-success'>Pergunta salva com sucesso!</span>";
+  document.getElementById("categoria").value = "";
+  document.getElementById("pergunta").value = "";
+  document.getElementById("resposta").value = "";
+  document.getElementById("imagem").value = "";
+  document.getElementById("video").value = "";
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
