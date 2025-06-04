@@ -1,5 +1,5 @@
 
-const sheetUrl = "https://docs.google.com/spreadsheets/d/1JUa3lUHD7imp75eR5BxuzG2yFIhnvScPyC_Xjic0nWQ/edit?usp=sharing";
+const sheetUrl = "https://script.google.com/macros/s/AKfycbyAW2W_QcwbmqXy6GMB7ntjukn3o5bZNTgfrx_fvge6vTCBY6MZu82EJXt--sAGK1cfTQ/exec";
 
 function formatFAQ(data) {
   const categorias = {};
