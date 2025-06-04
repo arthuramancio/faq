@@ -1,5 +1,5 @@
 
-const sheetUrl = "URL_DA_SUA_WEBAPP_GOOGLE_SHEETS";
+const sheetUrl = "https://script.google.com/macros/s/AKfycbwRkth42EXxP4KgDgkvYr1fyaicJu0m9qW-OYz2yPpuPpC8ihg_WgiyJndAu9go58ftrw/exec";
 
 function formatFAQ(data) {
   const categorias = {};
