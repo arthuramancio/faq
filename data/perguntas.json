@@ -1,0 +1,44 @@
+{
+  "faq": [
+    {
+      "category": "Presença com Reconhecimento Facial",
+      "questions": [
+        {
+          "q": "Como funciona o reconhecimento facial?",
+          "a": "A presença é registrada automaticamente quando o aluno é identificado pela câmera no ponto de entrada."
+        },
+        {
+          "q": "O sistema reconhece todos os alunos?",
+          "a": "Sim, desde que o cadastro biométrico tenha sido realizado corretamente."
+        }
+      ]
+    },
+    {
+      "category": "Dashboard e Relatórios",
+      "questions": [
+        {
+          "q": "Como acessar os relatórios de presença?",
+          "a": "No menu lateral, clique em 'Dashboard' e selecione 'Relatórios'."
+        }
+      ]
+    },
+    {
+      "category": "Comunicados",
+      "questions": [
+        {
+          "q": "Como enviar um comunicado aos responsáveis?",
+          "a": "Vá em 'Mensagens' e clique em 'Novo comunicado'. Selecione os destinatários e envie."
+        }
+      ]
+    },
+    {
+      "category": "Integrações e Tecnologia",
+      "questions": [
+        {
+          "q": "Quais sistemas o FaceSchool integra?",
+          "a": "Atualmente, integramos com o sistema X e Y por meio de APIs."
+        }
+      ]
+    }
+  ]
+}

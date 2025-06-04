@@ -1,76 +1,46 @@
+fetch('data/perguntas.json')
+  .then(res => res.json())
+  .then(data => renderFAQs(data.faq));
 
-const categories = [
-    { id: "dashboard-relatorios", file: "dashboard-relatorios.json" },
-    { id: "reconhecimento-facial", file: "reconhecimento-facial.json" },
-    { id: "manejo-alunos", file: "manejo-alunos.json" },
-    { id: "comunicados-mensagens", file: "comunicados-mensagens.json" },
-    { id: "presenca-justificativa", file: "presenca-justificativa.json" },
-    { id: "integracoes", file: "integracoes.json" },
-    { id: "funcionalidades", file: "funcionalidades.json" }
-];
+const faqContainer = document.getElementById('faq-container');
+const searchInput = document.getElementById('searchInput');
 
-const faqContainer = document.getElementById("faq-container");
-const searchInput = document.getElementById("searchInput");
-
-function highlight(text, search) {
-    const regex = new RegExp(\`(\${search})\`, "gi");
-    return text.replace(regex, "<mark>$1</mark>");
-}
-
-function loadFAQs() {
-    categories.forEach(category => {
-        fetch("data/" + category.file)
-            .then(response => response.json())
-            .then(data => {
-                const section = document.createElement("section");
-                section.id = category.id;
-                section.innerHTML = \`<h2 class="mt-4">\${data.title}</h2>\`;
-
-                const accordionId = "accordion-" + category.id;
-                const accordion = document.createElement("div");
-                accordion.className = "accordion";
-                accordion.id = accordionId;
-
-                data.questions.forEach((q, index) => {
-                    const item = document.createElement("div");
-                    item.className = "accordion-item";
-
-                    item.innerHTML = \`
-                        <h2 class="accordion-header" id="heading-\${category.id}-\${index}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-\${category.id}-\${index}">
-                                \${q.question}
-                            </button>
-                        </h2>
-                        <div id="collapse-\${category.id}-\${index}" class="accordion-collapse collapse" data-bs-parent="#\${accordionId}">
-                            <div class="accordion-body">\${q.answer}</div>
-                        </div>
-                    \`;
-                    accordion.appendChild(item);
-                });
-                section.appendChild(accordion);
-                faqContainer.appendChild(section);
-            });
+function renderFAQs(faqData) {
+  faqContainer.innerHTML = '';
+  faqData.forEach((cat, i) => {
+    const section = document.createElement('div');
+    section.innerHTML = `<h3 class='mb-3 mt-4'>${cat.category}</h3>`;
+    const accordion = document.createElement('div');
+    accordion.className = 'accordion';
+    accordion.id = `accordion-${i}`;
+    cat.questions.forEach((q, j) => {
+      const id = `${i}-${j}`;
+      accordion.innerHTML += `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-${id}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${id}">
+              ${q.q}
+            </button>
+          </h2>
+          <div id="collapse-${id}" class="accordion-collapse collapse" data-bs-parent="#accordion-${i}">
+            <div class="accordion-body">${q.a}</div>
+          </div>
+        </div>`;
     });
+    section.appendChild(accordion);
+    faqContainer.appendChild(section);
+  });
 }
 
-searchInput.addEventListener("input", () => {
-    const searchTerm = searchInput.value.toLowerCase();
-    document.querySelectorAll(".accordion-item").forEach(item => {
-        const question = item.querySelector(".accordion-button").textContent.toLowerCase();
-        const answer = item.querySelector(".accordion-body").textContent.toLowerCase();
-        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
-            item.style.display = "block";
-            if (searchTerm) {
-                item.querySelector(".accordion-button").innerHTML = highlight(item.querySelector(".accordion-button").textContent, searchTerm);
-                item.querySelector(".accordion-body").innerHTML = highlight(item.querySelector(".accordion-body").textContent, searchTerm);
-            } else {
-                item.querySelector(".accordion-button").innerHTML = item.querySelector(".accordion-button").textContent;
-                item.querySelector(".accordion-body").innerHTML = item.querySelector(".accordion-body").textContent;
-            }
-        } else {
-            item.style.display = "none";
-        }
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase();
+  fetch('data/perguntas.json')
+    .then(res => res.json())
+    .then(data => {
+      const filtered = data.faq.map(cat => ({
+        category: cat.category,
+        questions: cat.questions.filter(q => q.q.toLowerCase().includes(term) || q.a.toLowerCase().includes(term))
+      })).filter(cat => cat.questions.length > 0);
+      renderFAQs(filtered);
     });
 });
-
-loadFAQs();

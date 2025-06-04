@@ -1,18 +1,20 @@
-
 body {
-    background-color: #F2F2F2;
-    color: #333333;
+  background-color: #F2F2F2;
+  color: #333;
 }
 h1 {
-    color: #2F80ED;
+  color: #00C896;
 }
 .accordion-button {
-    background-color: #2F80ED;
-    color: white;
+  background-color: #00C896;
+  color: white;
 }
 .accordion-button:not(.collapsed) {
-    background-color: #56CCF2;
+  background-color: #00A97D;
 }
 .accordion-body {
-    background-color: white;
+  background-color: white;
+}
+mark {
+  background-color: yellow;
 }
