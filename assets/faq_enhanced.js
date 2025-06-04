@@ -17,7 +17,6 @@ function renderFAQs(faqData) {
   catList.innerHTML = "";
 
   faqData.forEach((cat, i) => {
-    // Adiciona ao menu lateral
     const link = document.createElement("a");
     link.href = `#cat-${i}`;
     link.textContent = cat.title;
